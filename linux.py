@@ -1,4 +1,4 @@
-''' 
+'''
 This file gives the linux support for this repo
 '''
 import sys
@@ -54,8 +54,8 @@ uncomment the below lines for linux - works - but activities won't be dumped in 
 
 # run()
 def get_chrome_url_x():
-        ''' 
-        instead of url the name of the website and the title of the page is returned seperated by '/' 
+        '''
+        instead of url the name of the website and the title of the page is returned seperated by '/'
         '''
         detail_full = get_active_window_raw()
         detail_list = detail_full.split(' - ')
@@ -69,4 +69,3 @@ def get_active_window_x():
     detail_list = None if None else full_detail.split(" - ")
     new_window_name = detail_list[-1]
     return new_window_name
-

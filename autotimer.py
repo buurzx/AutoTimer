@@ -3,6 +3,7 @@ import time
 from os import system
 from activity import *
 import json
+import io
 import datetime
 import sys
 if sys.platform in ['Windows', 'win32', 'cygwin']:
@@ -77,7 +78,6 @@ try:
             if 'Google Chrome' in new_window_name:
                 new_window_name = l.get_chrome_url_x()
 
-        
         if active_window_name != new_window_name:
             print(active_window_name)
             activity_name = active_window_name
@@ -96,15 +96,22 @@ try:
                 if not exists:
                     activity = Activity(activity_name, [time_entry])
                     activeList.activities.append(activity)
-                with open('activities.json', 'w') as json_file:
-                    json.dump(activeList.serialize(), json_file,
-                              indent=4, sort_keys=True)
+                with io.open('activities.json', 'w', encoding='utf8') as json_file:
+                    # json.dump(activeList.serialize(), json_file,
+                    #           indent=4, sort_keys=True, ensure_ascii=False)
+
+                    data = json.dumps(activeList.serialize(), indent=4, sort_keys=True, ensure_ascii=False).decode('utf-8')
+                    # unicode(data) auto-decodes data to unicode if str
+                    json_file.write(unicode(data))
                     start_time = datetime.datetime.now()
             first_time = False
             active_window_name = new_window_name
 
         time.sleep(1)
-    
+
 except KeyboardInterrupt:
-    with open('activities.json', 'w') as json_file:
-        json.dump(activeList.serialize(), json_file, indent=4, sort_keys=True)
+    with io.open('activities.json', 'w', encoding='utf8') as json_file:
+        # json.dump(activeList.serialize(), json_file, indent=4, sort_keys=True, ensure_ascii=False)
+        data = json.dumps(activeList.serialize(), indent=4, sort_keys=True, ensure_ascii=False).decode('utf-8')
+        # unicode(data) auto-decodes data to unicode if str
+        json_file.write(unicode(data))
